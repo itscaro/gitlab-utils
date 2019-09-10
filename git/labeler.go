@@ -24,7 +24,10 @@ func Label(project string, mergeRequest int) error {
 	}
 	fmt.Printf("Config %s\n", config)
 
-	mr, _, _ := client.MergeRequests.GetMergeRequestChanges(project, mergeRequest)
+	mr, _, err := client.MergeRequests.GetMergeRequestChanges(project, mergeRequest)
+	if err != nil {
+		return err
+	}
 	if mr == nil {
 		return errors.New(fmt.Sprintf("could not fetch merge request %d for project %s", mergeRequest, project))
 	}

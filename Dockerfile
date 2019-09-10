@@ -20,10 +20,8 @@ FROM alpine:3.9
 
 RUN apk --no-cache add ca-certificates git
 
-WORKDIR /root/
+WORKDIR /app
 
-COPY --from=builder /app/build/cli /usr/bin/
+COPY --from=builder /app/build/cli /app/cli
 
-ENV PATH=$PATH:/usr/bin/
-
-CMD ["cli"]
+ENTRYPOINT ["/app/cli"]
