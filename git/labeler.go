@@ -6,22 +6,12 @@ package git
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 
 	"github.com/gobwas/glob"
 	"github.com/xanzy/go-gitlab"
-	"gopkg.in/yaml.v2"
 )
 
-func Label(project string, mergeRequest int) error {
-	var config map[string][]string
-	if data, err := ioutil.ReadFile("label.yml"); err != nil {
-		return err
-	} else {
-		if err := yaml.Unmarshal(data, &config); err != nil {
-			return err
-		}
-	}
+func Label(config map[string][]string, project string, mergeRequest int) error {
 	fmt.Printf("Config %s\n", config)
 
 	mr, _, err := client.MergeRequests.GetMergeRequestChanges(project, mergeRequest)

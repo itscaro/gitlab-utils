@@ -3,15 +3,19 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"runtime"
 
 	"github.com/itscaro/gitlab-labeler/git"
 	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v2"
 )
 
 var rootCmdOpts struct {
+	configFile     string
 	project        string
 	mergeRequestID int
 }
@@ -29,6 +33,11 @@ func createRootCmd() *cobra.Command {
 		},
 	}
 
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Fatalln("Could not determine working directory")
+	}
+	cmd.Flags().StringVarP(&rootCmdOpts.configFile, "config", "f", filepath.Join(dir, "label.yml"), "Project")
 	cmd.Flags().StringVarP(&rootCmdOpts.project, "project", "p", "", "Project")
 	cmd.Flags().IntVarP(&rootCmdOpts.mergeRequestID, "mergerRequestID", "i", 0, "Merge Request ID")
 
@@ -61,9 +70,19 @@ func runCmd(cmd *cobra.Command, args []string) error {
 	if len(token) == 0 {
 		log.Fatalln("GITLAB_ENDPOINT must be set")
 	}
+
+	var config map[string][]string
+	if data, err := ioutil.ReadFile(rootCmdOpts.configFile); err != nil {
+		return err
+	} else {
+		if err := yaml.Unmarshal(data, &config); err != nil {
+			return err
+		}
+	}
+
 	git.NewClient(endpoint, token)
 
-	return git.Label(rootCmdOpts.project, rootCmdOpts.mergeRequestID)
+	return git.Label(config, rootCmdOpts.project, rootCmdOpts.mergeRequestID)
 }
 
 func printMemory() {
