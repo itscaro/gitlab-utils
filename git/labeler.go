@@ -37,12 +37,12 @@ func Label(project string, mergeRequest int) error {
 		counter++
 		for label, paths := range config {
 			for _, p := range paths {
-
 				g = glob.MustCompile(p)
 				if g.Match(change.OldPath) || g.Match(change.NewPath) {
 					fmt.Printf("Apply label %s because of %s or %s\n", label, change.OldPath, change.NewPath)
 					labelsToApply = append(labelsToApply, label)
 					delete(config, label)
+					break
 				}
 			}
 		}
