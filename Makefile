@@ -1,4 +1,4 @@
-IMAGE=itscaro/gitlab-labeler
+IMAGE=itscaro/gitlab-utils
 
 .PHONY: release
 release: TAG ?= $(shell git describe --tags)

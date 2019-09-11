@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/itscaro/gitlab-labeler/cmd"
-	"github.com/itscaro/gitlab-labeler/utils"
+	"github.com/itscaro/gitlab-utils/cmd"
+	"github.com/itscaro/gitlab-utils/utils"
 )
 
 func main() {

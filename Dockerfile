@@ -11,8 +11,8 @@ RUN go mod download
 
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build --ldflags "-s -w \
-        -X github.com/itscaro/gitlab-labeler/utils.GitCommit=${GIT_COMMIT} \
-        -X github.com/itscaro/gitlab-labeler/utils.Version=${VERSION}" \
+        -X github.com/itscaro/gitlab-utils/utils.GitCommit=${GIT_COMMIT} \
+        -X github.com/itscaro/gitlab-utils/utils.Version=${VERSION}" \
         -a -installsuffix cgo -o build/cli
 
 # Release stage
