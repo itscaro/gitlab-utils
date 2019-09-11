@@ -46,14 +46,18 @@ func Label(config map[string][]string, project string, mergeRequest int) error {
 	}
 
 	fmt.Printf("Done after %d iterations / %d changes\n", counter, len(mr.Changes))
-	fmt.Printf("Going to apply %s\n", labelsToApply)
 
 	// Set new labels
-	opts := gitlab.UpdateMergeRequestOptions{
-		Labels: labelsToApply,
-	}
-	if _, _, err := client.MergeRequests.UpdateMergeRequest(project, mergeRequest, &opts); err != nil {
-		return err
+	if len(labelsToApply) == 0 {
+		fmt.Printf("No label to apply\n")
+	} else {
+		fmt.Printf("Going to apply %s\n", labelsToApply)
+		opts := gitlab.UpdateMergeRequestOptions{
+			Labels: labelsToApply,
+		}
+		if _, _, err := client.MergeRequests.UpdateMergeRequest(project, mergeRequest, &opts); err != nil {
+			return err
+		}
 	}
 
 	return nil
