@@ -47,7 +47,7 @@ stages:
 label:
   stage: release
   script:
-    - docker run --rm -e GITLAB_ENDPOINT=$CI_API_V4_URL -e GITLAB_TOKEN=<Token to access Gitlab API> -v "$(pwd)/build/binary:/tmp/binary" itscaro/gitlab-utils upload -p $CI_PROJECT_PATH -i /tmp/binary
+    - docker run --rm -e GITLAB_ENDPOINT=$CI_API_V4_URL -e GITLAB_TOKEN=<Token to access Gitlab API> -v "$(pwd)/build/binary:/assets/binary" itscaro/gitlab-utils upload -p $CI_PROJECT_PATH -t $CI_COMMIT_TAG -i /assets/binary
   only:
     refs:
       - tags
