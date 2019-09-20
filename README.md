@@ -34,7 +34,7 @@ label:
     - merge_requests
 ```
 
-## Upload file
+## Upload file as asset
 This command is useful to release assets
 
 You need a Gitlab token and mount the file to upload inside the container.

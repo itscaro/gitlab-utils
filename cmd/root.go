@@ -32,6 +32,7 @@ func createRootCmd() *cobra.Command {
 	cmd.AddCommand(
 		createLabelCmd(),
 		createUploadCmd(),
+		createUploadAssetCmd(),
 	)
 	return cmd
 }
