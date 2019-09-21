@@ -48,10 +48,15 @@ func createClient() {
 	}
 	token := os.Getenv("GITLAB_TOKEN")
 	if len(token) == 0 {
-		log.Fatalln("GITLAB_ENDPOINT must be set")
+		log.Fatalln("GITLAB_TOKEN must be set")
+	}
+	projectUrl := os.Getenv("GITLAB_PROJECT_URL")
+	if len(projectUrl) == 0 {
+		log.Fatalln("GITLAB_PROJECT_URL must be set")
 	}
 
 	git.NewClient(endpoint, token)
+	git.ProjectUrl(projectUrl)
 }
 
 func printMemory() {

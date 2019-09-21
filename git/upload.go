@@ -36,7 +36,7 @@ func UploadAsset(project string, tag string, file string) error {
 	}
 
 	opt := gitlab.CreateReleaseLinkOptions{}
-	opt.URL = &uf.URL
+	opt.URL = gitlab.String(projectUrl + uf.URL)
 	rl, _, err := client.ReleaseLinks.CreateReleaseLink(project, tag, &opt)
 	if err != nil {
 		return err
