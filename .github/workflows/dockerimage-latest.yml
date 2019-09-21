@@ -11,6 +11,7 @@ jobs:
     - name: Build the Docker image
       env:
         DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+        DOCKER_HUB_LOGIN: ${{ secrets.DOCKER_HUB_LOGIN }}
       run: |
         docker build . --file Dockerfile --tag itscaro/gitlab-utils:latest
         echo "${DOCKER_HUB_TOKEN}" | docker login -u "${DOCKER_HUB_LOGIN}" --password-stdin
