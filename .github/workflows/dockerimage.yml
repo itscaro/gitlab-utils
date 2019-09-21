@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest 
     steps:
     - uses: actions/checkout@v1
-    - name: Build & Push
+    - name: Build & Push latest
       env:
         DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
         DOCKER_HUB_LOGIN: ${{ secrets.DOCKER_HUB_LOGIN }}
@@ -16,3 +16,11 @@ jobs:
         docker build . --file Dockerfile --tag itscaro/gitlab-utils:latest
         echo "${DOCKER_HUB_TOKEN}" | docker login -u "${DOCKER_HUB_LOGIN}" --password-stdin
         docker push itscaro/gitlab-utils:latest
+    - name: Build & Push Tag
+      if: contains(github.ref, 'tags')
+      env:
+        DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+        DOCKER_HUB_LOGIN: ${{ secrets.DOCKER_HUB_LOGIN }}
+        REF: ${{ github.ref }}
+      run: |
+        docker tag itscaro/gitlab-utils:latest itscaro/gitlab-utils:${REF##*/}
