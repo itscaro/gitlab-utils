@@ -38,7 +38,7 @@ func UploadAsset(projectUrl string, project string, tag string, name string, fil
 	}
 
 	if len(name) == 0 {
-		parts := strings.Split("/", fileUrl)
+		parts := strings.Split(fileUrl, "/")
 		name = parts[len(parts)-1]
 	}
 
