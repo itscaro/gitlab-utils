@@ -1,0 +1,17 @@
+name: Build itscaro/gitlab-utils:latest
+on:
+  push:
+    branches:
+    - master
+jobs:
+  build on push:
+    runs-on: ubuntu-latest 
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      env:
+        DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+      run: |
+        docker build . --file Dockerfile --tag itscaro/gitlab-utils:latest
+        echo "${DOCKER_HUB_TOKEN}" | docker login -u "${DOCKER_HUB_LOGIN}" --password-stdin
+        docker push itscaro/gitlab-utils:latest
