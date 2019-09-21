@@ -6,12 +6,17 @@ package git
 import (
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/xanzy/go-gitlab"
 )
 
 func Upload(projectUrl string, project string, file string) (fileUrl string, err error) {
+	if !fileExists(file) {
+		return "", errors.New(fmt.Sprintf("File %s does not exist", file))
+	}
+
 	uf, _, err := client.Projects.UploadFile(project, file)
 	if err != nil {
 		return fileUrl, err
@@ -52,4 +57,12 @@ func UploadAsset(projectUrl string, project string, tag string, name string, fil
 	}
 
 	return nil
+}
+
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }

@@ -14,7 +14,7 @@ func main() {
 
 func printVersion() {
 	fmt.Printf(
-		"Gitlab Labeler (%s-%s) (Go %s)\n",
+		"Gitlab Utils (%s-%s) (Go %s)\n",
 		utils.GetVersion(),
 		utils.GetCommit(),
 		utils.GetRuntimeVersion(),
