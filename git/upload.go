@@ -31,29 +31,35 @@ func Upload(projectUrl string, project string, file string) (fileUrl string, err
 	return fileUrl, nil
 }
 
-func UploadAsset(projectUrl string, project string, tag string, name string, file string) error {
-	fileUrl, err := Upload(projectUrl, project, file)
-	if err != nil {
-		return err
+func UploadAsset(projectUrl string, project string, tag string, name string, file string, url string) error {
+	if len(file) > 0 {
+		var err error
+		fileUrl, err := Upload(projectUrl, project, file)
+		if err != nil {
+			return err
+		}
+		url = fileUrl
+	} else if len(url) == 0 {
+		return errors.New("either file or url must be given")
 	}
 
 	if len(name) == 0 {
-		parts := strings.Split(fileUrl, "/")
+		parts := strings.Split(url, "/")
 		name = parts[len(parts)-1]
 	}
 
 	opt := gitlab.CreateReleaseLinkOptions{
 		Name: gitlab.String(name),
-		URL:  gitlab.String(fileUrl),
+		URL:  gitlab.String(url),
 	}
 	rl, _, err := client.ReleaseLinks.CreateReleaseLink(project, tag, &opt)
 	if err != nil {
 		return err
 	}
 	if rl == nil {
-		return errors.New(fmt.Sprintf("could not create release link for file %s", fileUrl))
+		return errors.New(fmt.Sprintf("could not create release link for file %s", url))
 	} else {
-		fmt.Printf("File %s was created as release link of tag %s\n", fileUrl, tag)
+		fmt.Printf("File %s was created as release link of tag %s\n", url, tag)
 	}
 
 	return nil

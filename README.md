@@ -35,8 +35,8 @@ label:
       -v "$(pwd)/build/binary:/assets/binary"
       itscaro/gitlab-utils
       label
-        --project=$CI_PROJECT_PATH
-        --merge-request-id=$CI_MERGE_REQUEST_IID
+        --project $CI_PROJECT_PATH
+        --merge-request-id $CI_MERGE_REQUEST_IID
   only:
     - merge_requests
 ```
@@ -61,10 +61,10 @@ label:
       -v "$(pwd)/build/binary:/assets/binary"
       itscaro/gitlab-utils
       upload
-        --projet-url=$CI_PROJECT_URL
-        --project=$CI_PROJECT_PATH
-        --tag=$CI_COMMIT_TAG
-        --file=/assets/binary
+        --projet-url $CI_PROJECT_URL
+        --project $CI_PROJECT_PATH
+        --tag $CI_COMMIT_TAG
+        --file /assets/binary
   only:
     refs:
       - tags
