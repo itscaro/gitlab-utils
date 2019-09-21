@@ -11,6 +11,7 @@ import (
 
 var uploadCmdOpts struct {
 	configFile   string
+	projectUrl   string
 	project      string
 	fileToUpload string
 }
@@ -31,10 +32,12 @@ func createUploadCmd() *cobra.Command {
 	if err != nil {
 		log.Fatalln("Could not determine working directory")
 	}
-	cmd.Flags().StringVarP(&uploadCmdOpts.configFile, "config", "f", filepath.Join(dir, "label.yml"), "Project")
+	cmd.Flags().StringVarP(&uploadCmdOpts.configFile, "config", "c", filepath.Join(dir, "label.yml"), "Project")
 	cmd.Flags().StringVarP(&uploadCmdOpts.project, "project", "p", "", "Project")
 	_ = cmd.MarkPersistentFlagRequired("project")
-	cmd.Flags().StringVarP(&uploadCmdOpts.fileToUpload, "file", "i", "", "The file to upload")
+	cmd.Flags().StringVarP(&uploadCmdOpts.projectUrl, "project-url", "u", "", "Project Url")
+	_ = cmd.MarkPersistentFlagRequired("project-url")
+	cmd.Flags().StringVarP(&uploadCmdOpts.fileToUpload, "file", "f", "", "The file to upload")
 	_ = cmd.MarkPersistentFlagRequired("file")
 
 	return cmd

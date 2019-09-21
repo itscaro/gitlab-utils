@@ -11,6 +11,7 @@ import (
 
 var uploadAssetCmdOpts struct {
 	configFile   string
+	projectUrl   string
 	project      string
 	tag          string
 	fileToUpload string
@@ -32,12 +33,14 @@ func createUploadAssetCmd() *cobra.Command {
 	if err != nil {
 		log.Fatalln("Could not determine working directory")
 	}
-	cmd.Flags().StringVarP(&uploadAssetCmdOpts.configFile, "config", "f", filepath.Join(dir, "label.yml"), "Project")
+	cmd.Flags().StringVarP(&uploadAssetCmdOpts.configFile, "config", "c", filepath.Join(dir, "label.yml"), "Project")
 	cmd.Flags().StringVarP(&uploadAssetCmdOpts.project, "project", "p", "", "Project")
 	_ = cmd.MarkPersistentFlagRequired("project")
+	cmd.Flags().StringVarP(&uploadAssetCmdOpts.projectUrl, "project-url", "u", "", "Project Url")
+	_ = cmd.MarkPersistentFlagRequired("project-url")
 	cmd.Flags().StringVarP(&uploadAssetCmdOpts.tag, "tag", "t", "", "Tag")
 	_ = cmd.MarkPersistentFlagRequired("tag")
-	cmd.Flags().StringVarP(&uploadAssetCmdOpts.fileToUpload, "file", "i", "", "The file to upload")
+	cmd.Flags().StringVarP(&uploadAssetCmdOpts.fileToUpload, "file", "f", "", "The file to upload")
 	_ = cmd.MarkPersistentFlagRequired("file")
 
 	return cmd
@@ -46,5 +49,5 @@ func createUploadAssetCmd() *cobra.Command {
 func runUploadAssetCmd(cmd *cobra.Command, args []string) error {
 	createClient()
 
-	return git.UploadAsset(uploadAssetCmdOpts.project, uploadAssetCmdOpts.tag, uploadAssetCmdOpts.fileToUpload)
+	return git.UploadAsset(uploadAssetCmdOpts.projectUrl, uploadAssetCmdOpts.project, uploadAssetCmdOpts.tag, uploadAssetCmdOpts.fileToUpload)
 }
