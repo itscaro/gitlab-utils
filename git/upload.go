@@ -6,6 +6,7 @@ package git
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/xanzy/go-gitlab"
 )
@@ -25,14 +26,21 @@ func Upload(projectUrl string, project string, file string) (fileUrl string, err
 	return fileUrl, nil
 }
 
-func UploadAsset(projectUrl string, project string, tag string, file string) error {
+func UploadAsset(projectUrl string, project string, tag string, name string, file string) error {
 	fileUrl, err := Upload(projectUrl, project, file)
 	if err != nil {
 		return err
 	}
 
-	opt := gitlab.CreateReleaseLinkOptions{}
-	opt.URL = gitlab.String(fileUrl)
+	if len(name) == 0 {
+		parts := strings.Split("/", fileUrl)
+		name = parts[len(parts)-1]
+	}
+
+	opt := gitlab.CreateReleaseLinkOptions{
+		Name: gitlab.String(name),
+		URL:  gitlab.String(fileUrl),
+	}
 	rl, _, err := client.ReleaseLinks.CreateReleaseLink(project, tag, &opt)
 	if err != nil {
 		return err

@@ -15,6 +15,7 @@ var uploadAssetCmdOpts struct {
 	project      string
 	tag          string
 	fileToUpload string
+	nameAsset    string
 }
 
 func createUploadAssetCmd() *cobra.Command {
@@ -40,8 +41,9 @@ func createUploadAssetCmd() *cobra.Command {
 	_ = cmd.MarkPersistentFlagRequired("project-url")
 	cmd.Flags().StringVarP(&uploadAssetCmdOpts.tag, "tag", "t", "", "Tag")
 	_ = cmd.MarkPersistentFlagRequired("tag")
-	cmd.Flags().StringVarP(&uploadAssetCmdOpts.fileToUpload, "file", "f", "", "The file to upload")
+	cmd.Flags().StringVarP(&uploadAssetCmdOpts.fileToUpload, "file", "f", "", "File to upload")
 	_ = cmd.MarkPersistentFlagRequired("file")
+	cmd.Flags().StringVarP(&uploadAssetCmdOpts.nameAsset, "name", "n", "", "Name of the asset")
 
 	return cmd
 }
@@ -49,5 +51,11 @@ func createUploadAssetCmd() *cobra.Command {
 func runUploadAssetCmd(cmd *cobra.Command, args []string) error {
 	createClient()
 
-	return git.UploadAsset(uploadAssetCmdOpts.projectUrl, uploadAssetCmdOpts.project, uploadAssetCmdOpts.tag, uploadAssetCmdOpts.fileToUpload)
+	return git.UploadAsset(
+		uploadAssetCmdOpts.projectUrl,
+		uploadAssetCmdOpts.project,
+		uploadAssetCmdOpts.tag,
+		uploadAssetCmdOpts.fileToUpload,
+		uploadAssetCmdOpts.nameAsset,
+	)
 }
