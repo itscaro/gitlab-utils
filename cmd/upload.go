@@ -46,5 +46,6 @@ func createUploadCmd() *cobra.Command {
 func runUploadCmd(cmd *cobra.Command, args []string) error {
 	createClient()
 
-	return git.Upload(uploadCmdOpts.project, uploadCmdOpts.fileToUpload)
+	_, err := git.Upload(uploadCmdOpts.projectUrl, uploadCmdOpts.project, uploadCmdOpts.fileToUpload)
+	return err
 }
