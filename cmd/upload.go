@@ -17,7 +17,7 @@ var uploadCmdOpts struct {
 
 func createUploadCmd() *cobra.Command {
 	var cmd = &cobra.Command{
-		Use:           "upload-asset",
+		Use:           "upload",
 		Short:         "",
 		SilenceUsage:  true,
 		SilenceErrors: true,
