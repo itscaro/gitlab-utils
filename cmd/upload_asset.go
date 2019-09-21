@@ -55,7 +55,7 @@ func runUploadAssetCmd(cmd *cobra.Command, args []string) error {
 		uploadAssetCmdOpts.projectUrl,
 		uploadAssetCmdOpts.project,
 		uploadAssetCmdOpts.tag,
-		uploadAssetCmdOpts.fileToUpload,
 		uploadAssetCmdOpts.nameAsset,
+		uploadAssetCmdOpts.fileToUpload,
 	)
 }
