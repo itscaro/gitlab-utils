@@ -33,7 +33,7 @@ func createLabelCmd() *cobra.Command {
 	if err != nil {
 		log.Fatalln("Could not determine working directory")
 	}
-	cmd.Flags().StringVarP(&labelCmdOpts.configFile, "config", "c", filepath.Join(dir, "label.yml"), "Project")
+	cmd.Flags().StringVarP(&labelCmdOpts.configFile, "config", "c", filepath.Join(dir, "label.yaml"), "Project")
 	cmd.Flags().StringVarP(&labelCmdOpts.project, "project", "p", "", "Project")
 	_ = cmd.MarkPersistentFlagRequired("project")
 	cmd.Flags().IntVarP(&labelCmdOpts.mergeRequestID, "merge-request-id", "i", 0, "Merge Request ID")

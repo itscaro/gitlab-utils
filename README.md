@@ -7,11 +7,11 @@ docker rm -f gitlab-utils
 ```
 
 ## Labeler
-This command calls Gitlab API to get changes and apply labels if it finds any matching rules in `label.yml`
+This command calls Gitlab API to get changes and apply labels if it finds any matching rules in `label.yaml`
 
-You need a Gitlab token and a configuration file mounted at `/app/label.yml` inside the container.
+You need a Gitlab token and a configuration file mounted at `/app/label.yaml` inside the container.
 
-### An example of rules `label.yml`
+### An example of rules `label.yaml`
 ```yaml
 BACK:
   - cli/**/*
@@ -21,7 +21,7 @@ CONFIG:
   - config/**/*
 ```
 
-### An example job in `.gitlab-ci.yml`
+### An example job in `.gitlab-ci.yaml`
 ```yaml
 stages:
   - label
@@ -46,7 +46,7 @@ This command is useful to release assets
 
 You need a Gitlab token and mount the file to upload inside the container.
 
-### An example job in `.gitlab-ci.yml`
+### An example job in `.gitlab-ci.yaml`
 ```yaml
 stages:
   - release

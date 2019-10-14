@@ -1,16 +1,11 @@
 package cmd
 
 import (
-	"log"
-	"os"
-	"path/filepath"
-
 	"github.com/itscaro/gitlab-utils/git"
 	"github.com/spf13/cobra"
 )
 
 var uploadAssetCmdOpts struct {
-	configFile string
 	projectUrl string
 	project    string
 	tag        string
@@ -31,11 +26,6 @@ func createUploadAssetCmd() *cobra.Command {
 		},
 	}
 
-	dir, err := os.Getwd()
-	if err != nil {
-		log.Fatalln("Could not determine working directory")
-	}
-	cmd.Flags().StringVarP(&uploadAssetCmdOpts.configFile, "config", "c", filepath.Join(dir, "label.yml"), "Project")
 	cmd.Flags().StringVarP(&uploadAssetCmdOpts.project, "project", "p", "", "Project")
 	_ = cmd.MarkPersistentFlagRequired("project")
 	cmd.Flags().StringVarP(&uploadAssetCmdOpts.projectUrl, "project-url", "u", "", "Project Url")
