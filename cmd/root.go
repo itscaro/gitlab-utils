@@ -42,11 +42,15 @@ func runRootCmd(cmd *cobra.Command, args []string) error {
 }
 
 func createClient() {
-	endpoint := os.Getenv("GITLAB_ENDPOINT")
+	var endpoint, token string
+	endpoint = os.Getenv("CI_API_V4_URL")
 	if len(endpoint) == 0 {
-		log.Fatalln("GITLAB_ENDPOINT must be set")
+		endpoint = os.Getenv("GITLAB_ENDPOINT")
+		if len(endpoint) == 0 {
+			log.Fatalln("CI_API_V4_URL or GITLAB_ENDPOINT must be set")
+		}
 	}
-	token := os.Getenv("GITLAB_TOKEN")
+	token = os.Getenv("GITLAB_TOKEN")
 	if len(token) == 0 {
 		log.Fatalln("GITLAB_TOKEN must be set")
 	}
