@@ -28,4 +28,4 @@ jobs:
         REF: ${{ github.ref }}
       run: |
         docker tag itscaro/gitlab-utils:latest itscaro/gitlab-utils:${REF##*/}
-        docker push itscaro/gitlab-utils:${REF}
+        docker push itscaro/gitlab-utils:${REF##*/}
