@@ -8,13 +8,14 @@ import (
 	"fmt"
 
 	"github.com/gobwas/glob"
+	"github.com/itscaro/gitlab-utils/utils"
 	"github.com/xanzy/go-gitlab"
 )
 
 func Label(config map[string][]string, project string, mergeRequest int) error {
 	fmt.Printf("Config %s\n", config)
 
-	mr, _, err := client.MergeRequests.GetMergeRequestChanges(project, mergeRequest)
+	mr, _, err := client.MergeRequests.GetMergeRequestChanges(project, mergeRequest, nil)
 	if err != nil {
 		return err
 	}
@@ -52,8 +53,13 @@ func Label(config map[string][]string, project string, mergeRequest int) error {
 		fmt.Printf("No label to apply\n")
 	} else {
 		fmt.Printf("Going to apply %s\n", labelsToApply)
+		mr, _, err := client.MergeRequests.GetMergeRequest(project, mergeRequest, nil)
+		if err != nil {
+			return err
+		}
+		labels := utils.Unique(append(mr.Labels, labelsToApply...))
 		opts := gitlab.UpdateMergeRequestOptions{
-			Labels: labelsToApply,
+			Labels: labels,
 		}
 		if _, _, err := client.MergeRequests.UpdateMergeRequest(project, mergeRequest, &opts); err != nil {
 			return err
