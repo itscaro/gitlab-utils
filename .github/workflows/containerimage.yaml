@@ -6,11 +6,12 @@ on:
     tags:
     - '*'
 jobs:
-  build-latest:
+  build-image:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Build & Push latest
+      if: ${{ github.ref == 'refs/heads/main' }}
       env:
         DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
         DOCKER_HUB_LOGIN: ${{ secrets.DOCKER_HUB_LOGIN }}
@@ -25,7 +26,6 @@ jobs:
         DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
         DOCKER_HUB_LOGIN: ${{ secrets.DOCKER_HUB_LOGIN }}
         GITHUB_CONTEXT: ${{ toJson(github) }}
-        REF: ${{ github.ref }}
       run: |
-        docker tag ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:latest ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:${REF##*/}
-        docker push ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:${REF##*/}
+        docker tag ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:latest ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:${GITHUB_REF##*/}
+        docker push ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:${GITHUB_REF##*/}
