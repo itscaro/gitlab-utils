@@ -16,7 +16,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build --ldflags "-s -w \
         -a -installsuffix cgo -o build/cli
 
 # Release stage
-FROM alpine:3.12
+FROM alpine:3.15
 
 RUN apk --no-cache add ca-certificates git
 
