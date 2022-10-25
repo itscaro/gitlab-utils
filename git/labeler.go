@@ -23,7 +23,7 @@ func Label(config map[string][]string, project string, mergeRequest int) error {
 		return errors.New(fmt.Sprintf("could not fetch merge request %d for project %s", mergeRequest, project))
 	}
 
-	var labelsToApply []string
+	var labelsToApply gitlab.Labels
 
 	var g glob.Glob
 	counter := 0
@@ -57,9 +57,9 @@ func Label(config map[string][]string, project string, mergeRequest int) error {
 		if err != nil {
 			return err
 		}
-		labels := utils.Unique(append(mr.Labels, labelsToApply...))
+		labels := gitlab.Labels(utils.Unique(append(mr.Labels, labelsToApply...)))
 		opts := gitlab.UpdateMergeRequestOptions{
-			Labels: labels,
+			Labels: &labels,
 		}
 		if _, _, err := client.MergeRequests.UpdateMergeRequest(project, mergeRequest, &opts); err != nil {
 			return err

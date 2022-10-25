@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/xanzy/go-gitlab"
@@ -17,7 +18,12 @@ func Upload(projectUrl string, project string, file string) (fileUrl string, err
 		return "", errors.New(fmt.Sprintf("File %s does not exist", file))
 	}
 
-	uf, _, err := client.Projects.UploadFile(project, file)
+	f, err := os.Open(file)
+	if err != nil {
+		return fileUrl, err
+	}
+
+	uf, _, err := client.Projects.UploadFile(project, f, filepath.Base(file))
 	if err != nil {
 		return fileUrl, err
 	}
