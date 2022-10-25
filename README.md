@@ -30,13 +30,11 @@ label:
   stage: label
   script:
     - docker run --rm
-      -e GITLAB_ENDPOINT=$CI_API_V4_URL 
+      -e GITLAB_ENDPOINT=$CI_API_V4_URL
       -e GITLAB_TOKEN=<Token to access Gitlab API>
       -v "$(pwd)/build/binary:/assets/binary"
       itscaro/gitlab-utils
       label
-        --project $CI_PROJECT_PATH
-        --merge-request-id $CI_MERGE_REQUEST_IID
   only:
     - merge_requests
 ```
@@ -55,7 +53,7 @@ label:
   stage: release
   script:
     - docker run --rm
-      -e GITLAB_ENDPOINT=$CI_API_V4_URL 
+      -e GITLAB_ENDPOINT=$CI_API_V4_URL
       -e GITLAB_TOKEN=<Token to access Gitlab API>
       -e GITLAB_PROJECT_URL=$CI_PROJECT_URL
       -v "$(pwd)/build/binary:/assets/binary"
