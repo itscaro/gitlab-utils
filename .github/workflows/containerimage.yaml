@@ -27,5 +27,5 @@ jobs:
         DOCKER_HUB_LOGIN: ${{ secrets.DOCKER_HUB_LOGIN }}
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
-        docker tag ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:latest ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:${GITHUB_REF##*/}
+        docker build . --file Dockerfile --tag ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:${GITHUB_REF##*/}
         docker push ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:${GITHUB_REF##*/}
