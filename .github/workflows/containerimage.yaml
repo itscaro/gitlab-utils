@@ -17,9 +17,16 @@ jobs:
         DOCKER_HUB_LOGIN: ${{ secrets.DOCKER_HUB_LOGIN }}
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
-        docker build . --file Dockerfile --tag ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:latest
+        IMAGE_ID=${DOCKER_HUB_LOGIN}/gitlab-utils:latest
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+        IMAGE_GITHUB=ghcr.io/${{ github.repository_owner }}/gitlab-utils:latest
+        IMAGE_GITHUB=$(echo $IMAGE_GITHUB | tr '[A-Z]' '[a-z]')
+        docker build . --file Dockerfile --tag $IMAGE_ID
+        docker tag $IMAGE_ID $IMAGE_GITHUB
         echo "${DOCKER_HUB_TOKEN}" | docker login -u "${DOCKER_HUB_LOGIN}" --password-stdin
-        docker push ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:latest
+        docker push $IMAGE_ID
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+        docker push $IMAGE_GITHUB
     - name: Build & Push Tag
       if: contains(github.ref, 'tags')
       env:
@@ -27,5 +34,13 @@ jobs:
         DOCKER_HUB_LOGIN: ${{ secrets.DOCKER_HUB_LOGIN }}
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
-        docker build . --file Dockerfile --tag ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:${GITHUB_REF##*/}
-        docker push ${{ secrets.DOCKER_HUB_LOGIN }}/gitlab-utils:${GITHUB_REF##*/}
+        IMAGE_ID=${DOCKER_HUB_LOGIN}/gitlab-utils:${GITHUB_REF##*/}
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+        IMAGE_GITHUB=ghcr.io/${{ github.repository_owner }}/gitlab-utils:${GITHUB_REF##*/}
+        IMAGE_GITHUB=$(echo $IMAGE_GITHUB | tr '[A-Z]' '[a-z]')
+        docker build . --file Dockerfile --tag $IMAGE_ID
+        docker tag $IMAGE_ID $IMAGE_GITHUB
+        echo "${DOCKER_HUB_TOKEN}" | docker login -u "${DOCKER_HUB_LOGIN}" --password-stdin
+        docker push $IMAGE_ID
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+        docker push $IMAGE_GITHUB
