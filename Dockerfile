@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.21 as builder
+FROM golang:1.22 as builder
 
 ARG GIT_COMMIT
 ARG VERSION
@@ -16,7 +16,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build --ldflags "-s -w \
         -a -installsuffix cgo -o build/cli
 
 # Release stage
-FROM alpine:3.18
+FROM alpine:3.20
 
 RUN apk --no-cache add ca-certificates git
 
